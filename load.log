@@ -1,0 +1,220 @@
+2026-09-17 08:18:03,928 - INFO - Connected to DuckDB instance
+2026-09-17 08:18:03,934 - INFO - Dropped table if exists
+2026-09-17 08:18:03,998 - INFO - vehicle_emissions:8 rows loaded
+2026-09-17 08:20:27,765 - INFO - Connected to DuckDB instance
+2026-09-17 08:20:27,805 - ERROR - An error occurred: Catalog Error: Table with name "vehicle_emissions" already exists!
+2026-09-17 09:02:25,537 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:02:25,546 - ERROR - An error occurred: Parser Error: syntax error at or near "f"
+
+LINE 2:                         f"DROP TABLE IF EXISTS vechicle_emissions;
+                                ^
+2026-09-17 09:02:25,549 - INFO - DuckDB connection closed
+2026-09-17 09:02:59,958 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:02:59,995 - ERROR - An error occurred: Catalog Error: Table with name "vehicle_emissions" already exists!
+2026-09-17 09:02:59,999 - INFO - DuckDB connection closed
+2026-09-17 09:05:10,672 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:05:10,709 - INFO - Dropped table if exists: yellow_trips
+2026-09-17 09:05:27,808 - INFO - Created table yellow_trips from Parquet for month 1
+2026-09-17 09:05:38,935 - ERROR - Error loading yellow month 02: Query interrupted
+2026-09-17 09:06:41,209 - ERROR - Error loading yellow month 03: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-03.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:43,553 - ERROR - Error loading yellow month 04: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-04.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:45,336 - ERROR - Error loading yellow month 05: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-05.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:47,007 - ERROR - Error loading yellow month 06: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-06.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:48,560 - ERROR - Error loading yellow month 07: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-07.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:49,881 - ERROR - Error loading yellow month 08: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-08.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:51,637 - ERROR - Error loading yellow month 09: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-09.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:53,744 - ERROR - Error loading yellow month 10: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-10.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:55,928 - ERROR - Error loading yellow month 11: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-11.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:58,711 - ERROR - Error loading yellow month 12: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-12.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:06:58,723 - INFO - yellow_trips: 2964624 total rows loaded
+2026-09-17 09:06:58,734 - INFO - Dropped table if exists: green_trips
+2026-09-17 09:07:01,034 - ERROR - Error loading green month 01: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/green_tripdata_2024-01.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:01,075 - ERROR - Error loading green month 02: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,075 - ERROR - Error loading green month 03: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,076 - ERROR - Error loading green month 04: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,076 - ERROR - Error loading green month 05: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,076 - ERROR - Error loading green month 06: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,077 - ERROR - Error loading green month 07: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,077 - ERROR - Error loading green month 08: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,077 - ERROR - Error loading green month 09: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,078 - ERROR - Error loading green month 10: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,078 - ERROR - Error loading green month 11: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,078 - ERROR - Error loading green month 12: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+2026-09-17 09:07:01,094 - ERROR - An error occurred: Catalog Error: Table with name green_trips does not exist!
+Did you mean "yellow_trips"?
+
+LINE 1: SELECT COUNT(*) FROM green_trips
+                             ^
+2026-09-17 09:07:01,111 - INFO - DuckDB connection closed
+2026-09-17 09:07:18,946 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:07:18,985 - INFO - Dropped table if exists: yellow_trips
+2026-09-17 09:07:21,576 - ERROR - Error loading yellow month 01: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-01.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:23,628 - ERROR - Error loading yellow month 02: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-02.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:24,993 - ERROR - Error loading yellow month 03: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-03.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:26,473 - ERROR - Error loading yellow month 04: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-04.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:27,946 - ERROR - Error loading yellow month 05: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-05.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:30,010 - ERROR - Error loading yellow month 06: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-06.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:32,266 - ERROR - Error loading yellow month 07: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-07.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:07:34,247 - ERROR - Error loading yellow month 08: HTTP Error: Unable to connect to URL "https://d37ci6vzurychx.cloudfront.net/trip-data/yellow_tripdata_2024-08.parquet": 403 (Forbidden).
+
+LINE 3:                             SELECT * FROM read_parquet('https://d37ci6vzurychx.cloudfront.net/trip...
+                                                  ^
+2026-09-17 09:13:35,604 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:13:35,637 - INFO - Dropped table if exists and then created yellow_trips table from Parquet
+2026-09-17 09:13:36,287 - ERROR - Error loading yellow month 01: Catalog Error: Table with name "yellow_trips" already exists!
+2026-09-17 09:14:07,524 - ERROR - Error loading yellow month 02: Query interrupted
+2026-09-17 09:14:27,006 - ERROR - Error loading yellow month 03: Query interrupted
+2026-09-17 09:14:42,254 - INFO - Loaded yellow month 04
+2026-09-17 09:14:57,316 - INFO - Loaded yellow month 05
+2026-09-17 09:14:57,748 - ERROR - Error loading yellow month 06: Query interrupted
+2026-09-17 09:15:47,600 - INFO - Loaded yellow month 07
+2026-09-17 09:15:48,309 - ERROR - Error loading yellow month 08: Query interrupted
+2026-09-17 09:16:41,237 - INFO - Loaded yellow month 09
+2026-09-17 09:17:58,782 - INFO - Loaded yellow month 10
+2026-09-17 09:18:16,371 - INFO - Loaded yellow month 11
+2026-09-17 09:18:36,140 - INFO - Loaded yellow month 12
+2026-09-17 09:18:36,146 - INFO - yellow_trips: 28061190 total rows loaded
+2026-09-17 09:18:36,151 - INFO - Dropped table if exists and then created green_trips table from Parquet
+2026-09-17 09:18:37,494 - INFO - Created table green_trips from Parquet for month 1
+2026-09-17 09:18:40,186 - INFO - Loaded green month 02
+2026-09-17 09:18:42,335 - INFO - Loaded green month 03
+2026-09-17 09:18:43,744 - INFO - Loaded green month 04
+2026-09-17 09:18:44,922 - INFO - Loaded green month 05
+2026-09-17 09:18:45,949 - INFO - Loaded green month 06
+2026-09-17 09:18:49,292 - INFO - Loaded green month 07
+2026-09-17 09:18:51,270 - INFO - Loaded green month 08
+2026-09-17 09:18:57,829 - INFO - Loaded green month 09
+2026-09-17 09:19:01,924 - INFO - Loaded green month 10
+2026-09-17 09:19:04,054 - INFO - Loaded green month 11
+2026-09-17 09:19:05,492 - INFO - Loaded green month 12
+2026-09-17 09:19:05,493 - INFO - green_trips: 660218 total rows loaded
+2026-09-17 09:19:05,922 - INFO - DuckDB connection closed
+2026-09-17 09:19:06,381 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:19:06,394 - INFO - Dropped table if exists and then created yellow_trips table from Parquet
+2026-09-17 09:19:27,569 - ERROR - Error loading yellow month 02: Query interrupted
+2026-09-17 09:20:11,719 - INFO - Loaded yellow month 03
+2026-09-17 09:21:07,731 - INFO - Loaded yellow month 04
+2026-09-17 09:21:50,250 - INFO - Loaded yellow month 05
+2026-09-17 09:22:25,362 - INFO - Loaded yellow month 06
+2026-09-17 09:22:49,745 - INFO - Loaded yellow month 07
+2026-09-17 09:23:25,751 - INFO - Loaded yellow month 08
+2026-09-17 09:23:51,537 - INFO - Loaded yellow month 09
+2026-09-17 09:24:24,092 - INFO - Loaded yellow month 10
+2026-09-17 09:24:46,362 - INFO - Loaded yellow month 11
+2026-09-17 09:25:10,259 - INFO - Loaded yellow month 12
+2026-09-17 09:25:10,267 - INFO - vehicle_emissions: 8 rows loaded
+2026-09-17 09:25:10,270 - INFO - yellow_trips: 63258760 rows loaded
+2026-09-17 09:25:10,272 - INFO - green_trips: 660218 rows loaded
+2026-09-17 09:25:10,296 - INFO - Dropped table if exists and then created green_trips table from Parquet
+2026-09-17 09:25:13,985 - INFO - Loaded green month 02
+2026-09-17 09:25:17,292 - INFO - Loaded green month 03
+2026-09-17 09:25:21,076 - INFO - Loaded green month 04
+2026-09-17 09:25:26,059 - INFO - Loaded green month 05
+2026-09-17 09:25:32,346 - INFO - Loaded green month 06
+2026-09-17 09:25:37,997 - INFO - Loaded green month 07
+2026-09-17 09:25:52,376 - INFO - Loaded green month 08
+2026-09-17 09:26:05,727 - INFO - Loaded green month 09
+2026-09-17 09:26:30,050 - INFO - Loaded green month 10
+2026-09-17 09:26:52,868 - INFO - Loaded green month 11
+2026-09-17 09:26:56,609 - INFO - Loaded green month 12
+2026-09-17 09:26:56,609 - INFO - vehicle_emissions: 8 rows loaded
+2026-09-17 09:26:56,613 - INFO - yellow_trips: 63258760 rows loaded
+2026-09-17 09:26:56,613 - INFO - green_trips: 1263885 rows loaded
+2026-09-17 09:26:56,676 - INFO - DuckDB connection closed
+2026-09-17 09:26:58,194 - INFO - Connected to DuckDB instance and loaded the needed httpfs extension
+2026-09-17 09:26:58,208 - INFO - Dropped table if exists and then created yellow_trips table from Parquet
+2026-09-17 09:27:23,703 - INFO - Loaded yellow month 02
+2026-09-17 09:27:47,823 - INFO - Loaded yellow month 03
+2026-09-17 09:28:27,810 - INFO - Loaded yellow month 04
+2026-09-17 09:28:45,377 - INFO - Loaded yellow month 05
+2026-09-17 09:29:04,945 - INFO - Loaded yellow month 06
+2026-09-17 09:29:45,268 - INFO - Loaded yellow month 07
+2026-09-17 09:30:09,526 - INFO - Loaded yellow month 08
+2026-09-17 09:30:41,423 - INFO - Loaded yellow month 09
+2026-09-17 09:31:06,616 - INFO - Loaded yellow month 10
+2026-09-17 09:31:21,805 - INFO - Loaded yellow month 11
+2026-09-17 09:31:49,830 - INFO - Loaded yellow month 12
+2026-09-17 09:31:49,832 - INFO - vehicle_emissions: 8 rows loaded
+2026-09-17 09:31:49,838 - INFO - yellow_trips: 101463856 rows loaded
+2026-09-17 09:31:49,838 - INFO - green_trips: 1263885 rows loaded
+2026-09-17 09:31:49,844 - INFO - Dropped table if exists and then created green_trips table from Parquet
+2026-09-17 09:31:50,695 - INFO - Loaded green month 02
+2026-09-17 09:31:51,834 - INFO - Loaded green month 03
+2026-09-17 09:31:52,723 - INFO - Loaded green month 04
+2026-09-17 09:31:53,621 - INFO - Loaded green month 05
+2026-09-17 09:31:55,174 - INFO - Loaded green month 06
+2026-09-17 09:31:56,774 - INFO - Loaded green month 07
+2026-09-17 09:32:00,600 - INFO - Loaded green month 08
+2026-09-17 09:32:02,483 - INFO - Loaded green month 09
+2026-09-17 09:32:03,647 - INFO - Loaded green month 10
+2026-09-17 09:32:04,827 - INFO - Loaded green month 11
+2026-09-17 09:32:06,402 - INFO - Loaded green month 12
+2026-09-17 09:32:06,403 - INFO - vehicle_emissions: 8 rows loaded
+2026-09-17 09:32:06,409 - INFO - yellow_trips: 101463856 rows loaded
+2026-09-17 09:32:06,409 - INFO - green_trips: 1867552 rows loaded
+2026-09-17 09:32:06,481 - INFO - DuckDB connection closed
