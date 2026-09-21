@@ -1,4 +1,4 @@
-# Date:     17 September 2026
+# Date:     21 September 2026
 # Author:   Victoria Martinez
 # Class:    DS 3022: UVA in Valencia
 # Purpose:  connects to a local DuckDB file, loads YELLOW, GREEN and 
@@ -14,10 +14,11 @@ logging.basicConfig(
     level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s',
     filename='load.log'
 )
-logger = logging.getLogger(__name__) # does name need to be changed?? 
+logger = logging.getLogger(__name__)
 
 # load URL given in class
 BASE_URL = 'https://d37ci6vzurychx.cloudfront.net/trip-data'
+
 
 def load_parquet_files():
 
@@ -26,24 +27,31 @@ def load_parquet_files():
     try:
         # Connect to local DuckDB instance
         con = duckdb.connect(database='emissions.duckdb', read_only=False)
-        con.execute("INSTALL httpfs; LOAD httpfs;") # without this, the read_parquet() function will not work with the URL
+        con.execute("INSTALL httpfs; LOAD httpfs;")  # without this, read_parquet() can't hit the URL
         logger.info("Connected to DuckDB instance and loaded the needed httpfs extension")
 
-        for color in ["yellow", "green"]: # loops over the two colors of trips
-            table = f"{color}_trips"
-            con.execute(f""" 
-                        DROP TABLE IF EXISTS vehicle_emissions;
-                        CREATE TABLE vehicle_emissions AS
-                        SELECT * FROM read_csv_auto('data/vehicle_emissions.csv');
-                        """)
-            logger.info(f"Dropped table if exists and then created {color}_trips table from Parquet")
+        # One-time vehicle_emissions load — not tied to color/month, so it lives outside both loops
+        con.execute("""
+                    DROP TABLE IF EXISTS vehicle_emissions;
+                    CREATE TABLE vehicle_emissions AS
+                    SELECT * FROM read_csv_auto('data/vehicle_emissions.csv');
+                    """)
+        logger.info("Dropped and recreated vehicle_emissions from CSV")
 
-            for month in range(1, 13): # inner loop per month, range is exclusive of upper limit
-                url = (
-                    f'{BASE_URL}/{color}_tripdata_2024-{month:02d}.parquet'
-                )
+        n = con.execute("SELECT COUNT(*) FROM vehicle_emissions").fetchone()[0]
+        logger.info(f"vehicle_emissions: {n} rows loaded")
+
+        for color in ["yellow", "green"]:  # loops over the two colors of trips
+            table = f"{color}_trips"
+
+            # Reset this color's table before rebuilding it across all 12 months
+            con.execute(f"DROP TABLE IF EXISTS {table};")
+            logger.info(f"Dropped {table} if it existed")
+
+            for month in range(1, 13):  # inner loop per month, range is exclusive of upper limit
+                url = f'{BASE_URL}/{color}_tripdata_2024-{month:02d}.parquet'
                 try:
-                    if month == 1: # for January, works through each month 
+                    if month == 1:  # January defines the schema; rest insert into it
                         con.execute(f"""
                             CREATE TABLE {table} AS 
                             SELECT * FROM read_parquet('{url}');
@@ -58,25 +66,21 @@ def load_parquet_files():
                 except Exception as month_error:
                     logger.error(f"Error loading {color} month {month:02d}: {month_error}")
 
-            n = con.execute(f"SELECT COUNT(*) FROM vehicle_emissions").fetchone()[0] 
-            logger.info(f"vehicle_emissions: {n} rows loaded") # lets me know if there were months that failed
+            n = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+            logger.info(f"{table}: {n} rows loaded")
 
-            n = con.execute(f"SELECT COUNT(*) FROM yellow_trips").fetchone()[0] 
-            logger.info(f"yellow_trips: {n} rows loaded") # lets me know if there were months that failed
+    except Exception as e:  # catches anything not caught in the inner per-month loop
+        print(f"An error occurred: {e}")
+        logger.error(f"An error occurred: {e}")
 
-            n = con.execute(f"SELECT COUNT(*) FROM green_trips").fetchone()[0] 
-            logger.info(f"green_trips: {n} rows loaded") # lets me know if there were months that failed
+    finally:
+        if con is not None:
+            con.close()
+            logger.info("DuckDB connection closed")
 
-    except Exception as e: # cataches any errors that are not caught in the inner loop
-         print(f"An error occurred: {e}")
-         logger.error(f"An error occurred: {e}")
 
-    finally: 
-            if con is not None:
-                con.close()
-                logger.info("DuckDB connection closed")
-if __name__ == "__main__": # entry point
-            load_parquet_files()
+if __name__ == "__main__":
+    load_parquet_files()
 
 
 # -------------------------  CODE GRAVEYARD ---------------------------
