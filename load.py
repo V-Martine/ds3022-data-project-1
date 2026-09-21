@@ -53,55 +53,69 @@ def load_parquet_files():
             logger.warning(f"vehicle_emissions: expected 8 rows, got {n} — check the CSV") #sanity check in case there is a problem
         # -----------------------------------------------------------
 
-         # ---------- yellow_trips working (checkpoint 2) ----------
-        table = f"yellow_trips"
-        pickup_col = "tpep_pickup_datetime"
-        dropoff_col = "tpep_dropoff_datetime" 
-
-        con.execute(f"DROP TABLE IF EXISTS {table};")
-        logger.info(f"Dropped {table} if it existed")
-
-        created = False  # flag to track if the table has been created
-
-        for month in range(1, 13):
-            url = f"{BASE_URL}/yellow_tripdata_2024-{month:02d}.parquet"
-
-            # Wrote out explicit column lists and not a general SELECT *
-            # We only need five specific columns (?) <- double check that once the second slidedeck comes out
-            select_sql = f"""
-                SELECT
-                    VendorID,
-                    {pickup_col} AS pickup_time,
-                    {dropoff_col} AS dropoff_time,
-                    passenger_count,
-                    trip_distance
-                FROM read_parquet('{url}')
-            """
-            try: 
-                before = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] if created else 0
-                if not created:
-                    con.execute(f"CREATE TABLE {table} AS {select_sql};")
-                    created = True
-                    logger.info(f"Created {table} table from Parquet for month {month:02d}")
-                else:
-                    con.execute(f"INSERT INTO {table} {select_sql};")
-                    logger.info(f"Inserted data into {table} for month {month:02d}")
-                after = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-                added = after - before
-                logger.info(f"{table}: loaded month {month:02d}/2024 — {added:,} rows added (total {after:,})")
-
-                # sanity check for the added = 0 
-                if added == 0:
-                    logger.warning(f"Added zero rows - no rows were added for {table} month {month:02d}. Check the month index.")
-            
-            except Exception as month_error:
-                logger.error(f"Error loading yellow month {month:02d}: {month_error}")
+         # ---------- yellow_trips and added green_trips working (checkpoint 2 & 3) ----------
+        totals = {} # 
         
-        if created:
-            n = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
-            logger.info(f"{table}: {n} rows loaded in total for 2024")
-        else:
-            logger.warning(f"No months were loaded successfully, table was never made")
+        # building a larger for loop to include the green and yellow 
+        for color in ['yellow', 'green']:
+            table = f"{color}_trips"
+
+            # differentiating between yellow and green for clean.py and transform.py
+            pickup_col = f"{'tpep' if color == 'yellow' else 'lpep'}_pickup_datetime"
+            dropoff_col = f"{'tpep' if color == 'yellow' else 'lpep'}_dropoff_datetime"
+            
+            con.execute(f"DROP TABLE IF EXISTS {table};")
+            logger.info(f"Dropped {table} if it existed")
+
+            created = False  # flag to track if the table has been created
+
+            # inner loop for the months
+            for month in range(1, 13):
+                url = f"{BASE_URL}/{color}_tripdata_2024-{month:02d}.parquet"
+
+                # Wrote out explicit column lists and not a general SELECT *
+                # We only need five specific columns (?) <- double check that once the second slidedeck comes out
+                select_sql = f"""
+                    SELECT
+                        VendorID,
+                        {pickup_col} AS pickup_time,
+                        {dropoff_col} AS dropoff_time,
+                        passenger_count,
+                        trip_distance
+                    FROM read_parquet('{url}')
+                """
+                try: 
+                    before = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0] if created else 0
+                    
+                    if not created:
+                        con.execute(f"CREATE TABLE {table} AS {select_sql};")
+                        created = True
+                        logger.info(f"Created {table} table for month {month:02d}") #log messages
+                    else:
+                        con.execute(f"INSERT INTO {table} {select_sql};")
+                        logger.info(f"Inserted data into {table} for month {month:02d}") #log messages
+                    
+                    after = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+                    added = after - before
+                    logger.info(f"{table}: loaded month {month:02d}/2024 — {added:,} rows added (total {after:,})")
+
+                    # sanity check for the added = 0 
+                    if added == 0:
+                        logger.warning(f"Added zero rows - no rows were added for {table} month {month:02d}. Check the month index.")
+                
+                except Exception as month_error:
+                    logger.error(f"Error loading {color} month {month:02d}: {month_error}")
+        
+            if created: # enters if loop if at least one month was loaded successfully
+                n = con.execute(f"SELECT COUNT(*) FROM {table}").fetchone()[0]
+                logger.info(f"{table}: {n} rows loaded in total for 2024")
+            else:
+                logger.warning(f"No months were loaded successfully, table was never made")
+        # ------ final summary messages ----------
+        logger.info("----- RAW ROW COUNT SUMMARY -----")
+        logger.info(f"vehicle_emissions: {n:,}")
+        for t, c, in totals.items():
+            logger.info(f"{t}: {c:,} rows loaded in total for 2024")
 
     except Exception as e:  # catches anything not caught in the inner per-month loop
         print(f"An error occurred: {e}")
