@@ -126,3 +126,9 @@ You will be graded according to the rubric distributed with this assignment. Par
 
 Use the rubric to track your work and scope of tasks. Edit the PDF version of the rubric using Adobe Acrobat Reader, indicating
 what tasks you attempted and those you did not. Save that revised PDF and submit as part of the Canvas assignment.
+
+VM Pipeline: 
+load.py loads the yellow and green trip data into DuckDB
+clean.py removes and verifies the duplicate or invalid trips
+transform.py adds the CO2, speed and data data columns
+analysis.py produces a monthly CO2 plot and data analysis
