@@ -2,6 +2,11 @@
 
 ## Assignment
 
+**Author:** Victoria Martinez  
+**Course:** DS 3022: UVA in Valencia  
+**Project:** NYC Taxi CO2 Data Pipeline 
+
+
 <img src="https://s3.amazonaws.com/uvasds-systems/images/nyc-taxi-graphic.png" style="align:right;float:right;max-width:50%;">
 
 This project demonstrates basic data engineering and data science skills. Using the freely available
@@ -14,6 +19,8 @@ and add DBT model files within the appropriate subfolder.
 Begin by forking this repository into your own account within GitHub. You will push change back to your own fork:
 
 [**FORK THIS REPO >>**](https://github.com/uvasds-systems/ds3022-data-project-1/fork)
+
+Completed - VM
 
 ## Data
 
@@ -34,6 +41,8 @@ Complete the `load.py` script to create a local, persistent DuckDB database that
 
 Your `load.py` script should also output raw row counts for each of these tables, before cleaning. Recall that once a table exists (perhaps with a  `CREATE TABLE` query defining columns and data types), subsequent DuckDB commands like this will continue to load the same table:
 
+Completed - VM
+
 ```
 -- Insert data from the 8th file
 INSERT INTO my_table
@@ -47,6 +56,7 @@ SELECT * FROM read_parquet('file9.parquet');
 **NOTE:** Given the redundancy of the examples above (nearly identical lines for each Parquet file) inserting multiple data sources into a single table should make use of **programmatic** means of iterating through the various sources, instead of **statically** coding individual INSERT statements, each for a separate data source.
 
 **NOTE:** Ask yourself: Do I need all columns for tables being imported?
+No, I can save myself time and energy by importing only certain ones
 
 ## Clean
 
@@ -58,6 +68,7 @@ Trips should be cleaned and checked for the following conditions (whether or not
 4. Remove any trips longer than 100 miles in length.
 5. Remove any trips lasting more than 1 day in length (86400 seconds).
 
+Completed  - VM 
 Complete the `clean.py` script to perform these steps and include code that checks/verifies that these conditions no longer exist in your trip table(s) within your DuckDB database. See [this reference](https://github.com/uvasds-systems/data-engineering-essentials/blob/main/synthetic/clean-data-answers.py) for examples.
 
 
@@ -72,10 +83,9 @@ After cleaning you should have 1 or 2 cleaned trip tables representing YELLOW an
 5. Extract the WEEK NUMBER from the pickup time and insert it as a new column `week_of_year`.
 6. Extract the MONTH from the pickup time and insert it as a new column `month_of_year`.
 
+Completed - VM 
 
 Complete the `transform.py` script to perform these steps using python-based DuckDB commands. For SQL reference see [this page](https://github.com/uvasds-systems/data-engineering-essentials/tree/main/transform) from earlier in the semester.
-
-For an additional 6 points, perform these steps using models in DBT. Save these files to `dbt/models/`.
 
 ## Analyze
 
@@ -92,7 +102,7 @@ along the X-axis and CO2 totals along the Y-axis. Render two lines/bars/plots of
 Your script should give text outputs for each calculation WITH a label explaining the value. The plot should be output as a PNG/JPG/GIF image 
 committed within your project.
 
-
+Completed - VM
 ## General Expectations, Notes & Comments
 
 - Your repository URL must be a fork of this repository.
