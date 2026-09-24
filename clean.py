@@ -21,6 +21,11 @@ TRIP_TABLES = ["yellow_trips", "green_trips"]  # list of trip tables to clean
 MAX_TRIP_MILES = 100 # max trip distance, trips longer will be removed 
 MAX_TRIP_SECONDS = 86_400  # max trip duration, trips longer will be removed
 
+def get_row_count(con, table_name):
+    return con.execute(
+        f"SELECT COUNT(*) FROM {table_name}"
+    ).fetchone()[0]
+
 # created a cleaning function: 
 def clean_trips_table(con, table_name):
     logger.info(f"Starting cleaning process for {table_name}") # so i know function was entered
@@ -79,17 +84,188 @@ def clean_trips_table(con, table_name):
             f"{table_name}: duplicate groups remain"
         )
     # ----- committed here at the end of class :), duplicates cleaned correctly! 
-    
+
     # ----------- Step #2: 0-passenger trips -----------
     before = con.execute(f"""
-        SELECT COUNT(*) FROM {table_name}
+        SELECT COUNT(*) 
+        FROM {table_name}
         WHERE passenger_count = 0
     """).fetchone()[0]
-    print(before, f"rows with passenger_count = 0 will be removed from {table_name}") # same with this print statement 
-    print(f'Before delete: {before:,} rows with passenger_count = 0')
 
-    # ----------- Step #3: 
+    logger.info(
+        "%s: %d zero-passenger trips before DELETE",
+        table_name, before
+    )
 
+    con.execute(f"""
+        DELETE FROM {table_name}
+        WHERE passenger_count = 0
+    """)
+
+    after = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE passenger_count = 0
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %,d zero-passenger trips after DELETE", 
+        table_name, 
+        after
+    )
+    # log the number of duplicate rows removed
+    logger.info(
+        "%s: removed %d duplicate rows (from %d to %d)",
+        table_name, before - after, before, after
+    )
+
+    if after != 0:
+        raise RuntimeError(
+            f"{table_name}: zero-passenger trips remain"
+        )
+
+    # ----------- Step #3: Removing the zer0-mile trips -------
+    before = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE trip_distance = 0
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d zero-mile trips before delete",
+        table_name, 
+        before
+    )
+    con.execute(f"""
+        DELETE FROM {table_name}
+        WHERE trip_distance = 0
+    """)
+
+    after = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE trip_distance = 0                    
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d zero-mile trips after delete",
+        table_name, 
+        after
+    )
+    # log the number of duplicate rows removed
+    logger.info(
+        "%s: removed %d duplicate rows (from %d to %d)",
+        table_name, before - after, before, after
+    )
+
+    if after != 0:
+        raise RuntimeError(
+            f"{table_name}: zero-mile trips remain"
+        )
+    
+# --------- Step 4: Removing trips over 100 miles -----------
+    before = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE trip_distance > {MAX_TRIP_MILES}
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d trips over %d before delete",
+        table_name, 
+        before,
+        MAX_TRIP_MILES
+    )
+    con.execute(f"""
+        DELETE FROM {table_name}
+        WHERE trip_distance > {MAX_TRIP_MILES}
+    """)
+
+    after = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE trip_distance > {MAX_TRIP_MILES}                   
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d trips over %d miles after delete",
+        table_name, 
+        after,
+        MAX_TRIP_MILES
+    )
+    # log the number of duplicate rows removed
+    logger.info(
+        "%s: removed %d duplicate rows (from %d to %d)",
+        table_name, before - after, before, after
+    )
+    if after != 0:
+        raise RuntimeError(
+            f"{table_name}: trips over"
+            f"{MAX_TRIP_MILES} miles remain"
+        )
+    # -------------- Step 5: Remove trips over 86,400 secs ----------
+    before = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE date_diff(
+            'second',
+            pickup_time, 
+            dropoff_time
+        ) > {MAX_TRIP_SECONDS}
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d trips over %d seconds before delete",
+        table_name, 
+        before,
+        MAX_TRIP_SECONDS
+    )
+    con.execute(f"""
+        DELETE FROM {table_name}
+        WHERE date_diff(
+            'second',
+            pickup_time, 
+            dropoff_time
+        ) > {MAX_TRIP_SECONDS}
+    """)
+
+    after = con.execute(f"""
+        SELECT COUNT(*)
+        FROM {table_name}
+        WHERE date_diff(
+            'second',
+            pickup_time, 
+            dropoff_time
+        ) > {MAX_TRIP_SECONDS}                  
+    """).fetchone()[0]
+
+    logger.info(
+        "%s: %d trips over %d seconds after delete",
+        table_name, 
+        after,
+        MAX_TRIP_SECONDS
+    )
+    # log the number of duplicate rows removed
+    logger.info(
+        "%s: removed %d duplicate rows (from %d to %d)",
+        table_name, before - after, before, after
+    )
+
+    if after != 0:
+        raise RuntimeError(
+            f"{table_name}: trips over a day length remain"
+        )
+    
+    final_count = get_row_count(con, table_name)
+
+    logger.info(
+        "%s: cleaning complete! %,d original rows, "
+        "%,d final rows, %,d total rows removed", 
+        table_name, 
+        original_count, 
+        final_count, 
+        original_count - final_count
+    )
 
 def clean_data():
     con = None
@@ -129,9 +305,13 @@ def clean_data():
         logger.info("Cleaning process completed successfully")
 
         for table in TRIP_TABLES:
-            count = con.execute(
-                f"SELECT COUNT(*) FROM {table}"
-            ).fetchone()[0]
+            count = get_row_count(con, table)
+
+            logger.info(
+                "%s: %,d rows after cleaning",
+                table,
+                count
+            )
 
             logger.info(f"{table}: {count} rows after cleaning")
         
